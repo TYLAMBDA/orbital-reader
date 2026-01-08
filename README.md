@@ -1,4 +1,4 @@
-![Home Page](picture\HomePage.png "Home Page")
+![Home Page](/picture/HomePage.png "Home Page")
 
 ## Run Locally
 
