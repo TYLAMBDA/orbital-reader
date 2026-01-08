@@ -9,6 +9,7 @@ export interface MenuItem {
   icon: LucideIcon;
   targetDock: DockPosition; // Where the sphere goes when this is active
   color: string;
+  special?: boolean; // For the offline button
 }
 
 export interface Book {
@@ -17,4 +18,15 @@ export interface Book {
   author: string;
   coverColor: string;
   progress: number;
+}
+
+export interface User {
+  username: string;
+  email: string;
+  avatar: string; // Tailwind color class string
+  stats: {
+    totalReadingHours: number;
+    booksRead: string[];
+    booksPublished: string[];
+  };
 }

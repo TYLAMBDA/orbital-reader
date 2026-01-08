@@ -25,17 +25,11 @@ const OrbitMenu: React.FC<OrbitMenuProps> = ({ items, currentDock, activeItemId,
   }, []);
 
   // GEOMETRY CALCULATION
-  // Center Mode Radius: Desktop 280px, Mobile 150px
-  // Docked Mode Radius: Desktop 200px, Mobile 110px
   const radius = currentDock === 'center' 
     ? (isMobile ? 150 : 280) 
     : (isMobile ? 110 : 200);
 
-  // Center Offset for docked mode (Orb center relative to edge)
-  // Desktop: -112px (-7rem), Mobile: -72px (-4.5rem)
   const centerOffset = isMobile ? -72 : -112; 
-  
-  // Offset Shift for Animation (How much the Orb moves when hiding)
   const hideShift = isMobile ? 40 : 64; 
 
   const getPosition = (index: number, total: number, dock: DockPosition) => {
@@ -104,6 +98,10 @@ const OrbitMenu: React.FC<OrbitMenuProps> = ({ items, currentDock, activeItemId,
         const Icon = item.icon;
         const animateState = isHidden ? 'hidden' : 'visible';
 
+        // Special Styling for Offline button
+        const isSpecial = item.special;
+        const activeColor = item.color || '#60a5fa';
+
         return (
           <motion.button
             key={item.id}
@@ -118,7 +116,7 @@ const OrbitMenu: React.FC<OrbitMenuProps> = ({ items, currentDock, activeItemId,
             style={{ 
                 left, 
                 top,
-                color: isActive ? '#60a5fa' : '#94a3b8',
+                color: isActive ? activeColor : (isSpecial ? '#64748b' : '#94a3b8'),
                 pointerEvents: isHidden ? 'none' : 'auto'
             }}
           >
@@ -126,15 +124,20 @@ const OrbitMenu: React.FC<OrbitMenuProps> = ({ items, currentDock, activeItemId,
                 className={`
                     p-3 rounded-full backdrop-blur-md border border-white/10 shadow-lg 
                     transition-all duration-300 group-hover:bg-white/10 group-hover:scale-110
-                    ${isActive ? 'bg-white/20 border-blue-400/50 shadow-blue-500/30' : 'bg-slate-900/60'}
+                    ${isActive ? 'bg-white/20 border-white/30' : (isSpecial ? 'bg-slate-800/80 border-slate-700' : 'bg-slate-900/60')}
                 `}
+                style={{
+                    boxShadow: isActive ? `0 0 15px ${activeColor}50` : 'none',
+                    borderColor: isActive ? activeColor : undefined
+                }}
             >
               <Icon size={isMobile ? 16 : 20} />
             </div>
             
             <motion.span 
-                className={`mt-1 text-[9px] font-bold tracking-widest uppercase transition-colors duration-300 ${isActive ? 'text-blue-300' : 'text-slate-600 group-hover:text-slate-400'}`}
+                className={`mt-1 text-[9px] font-bold tracking-widest uppercase transition-colors duration-300 ${isActive ? 'text-white' : 'text-slate-600 group-hover:text-slate-400'}`}
                 animate={{ opacity: 1 }}
+                style={{ color: isActive ? activeColor : undefined }}
             >
               {item.label}
             </motion.span>
